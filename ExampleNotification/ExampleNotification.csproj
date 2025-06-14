@@ -46,15 +46,19 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
-		<PackageReference Include="Xamarin.Firebase.Messaging" Version="124.1.1.2" />
+		<!-- Removed Xamarin.Firebase.Messaging from here -->
 	</ItemGroup>
 
 	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
 		<BundleResource Include="Platforms\iOS\GoogleService-Info.plist" />
+		<PackageReference Include="Xamarin.Firebase.iOS.Core" Version="8.10.0.3" />
+		<PackageReference Include="Xamarin.Firebase.iOS.CloudMessaging" Version="8.10.0.3" />
 	</ItemGroup>
 
 	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
 		<GoogleServicesJson Include="Platforms\Android\google-services.json" />
+		<AndroidResource Include="Platforms\Android\Resources\values\colors.xml" />
+		<PackageReference Include="Xamarin.Firebase.Messaging" Version="124.1.1.2" />
 	</ItemGroup>
 
 </Project>
