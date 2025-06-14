@@ -2,9 +2,9 @@
 using Android.Content.PM;
 using Android.OS;
 using Android.Content; // For NotificationService
-using Firebase;
+// using Firebase; // Removed as FirebaseApp.InitializeApp is no longer called here
 using System;
-// using Android.Gms.Common; // Not strictly required for these changes but good for Firebase context
+// using Android.Gms.Common;
 using Android.Util;
 using AndroidX.Core.Content; // Required for ContextCompat
 
@@ -20,16 +20,8 @@ public class MainActivity : MauiAppCompatActivity
     {
         base.OnCreate(savedInstanceState);
 
-        try
-        {
-            FirebaseApp.InitializeApp(this);
-            Log.Debug(TAG, "Firebase initialized successfully.");
-        }
-        catch (Exception ex)
-        {
-            // Log detailed error, this is crucial for debugging Firebase setup
-            Log.Error(TAG, "Firebase initialization failed: " + ex.ToString());
-        }
+        // FirebaseApp.InitializeApp(this); // This is now handled by Plugin.Firebase in MauiProgram.cs
+        // Log.Debug(TAG, "Firebase initialized successfully."); // Logging for direct init removed
 
         CreateNotificationChannel();
         AskForNotificationPermission();

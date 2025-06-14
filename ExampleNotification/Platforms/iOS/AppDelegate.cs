@@ -1,32 +1,23 @@
 ﻿using Foundation;
-using Firebase.CloudMessaging; // For Messaging
-using Firebase.Core; // For App.Configure()
+// using Firebase.CloudMessaging; // Removed, Plugin.Firebase handles this
+// using Firebase.Core; // Removed, Plugin.Firebase handles this
 using UIKit;
-using UserNotifications; // For UNUserNotificationCenter
-using System; // For Environment and Console.WriteLine
+using UserNotifications; // Still needed for RequestAuthorization
+using System; // For Console.WriteLine
 using Microsoft.Maui.ApplicationModel; // For MainThread
 
 namespace ExampleNotification;
 
 [Register("AppDelegate")]
-public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterDelegate, IMessagingDelegate
+public class AppDelegate : MauiUIApplicationDelegate // Removed IUNUserNotificationCenterDelegate, IMessagingDelegate
 {
 	protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
 
 	public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
 	{
-		// Initialize Firebase
-		try
-		{
-			App.Configure();
-			Console.WriteLine("Firebase initialized successfully.");
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine($"Firebase initialization failed: {ex}");
-		}
+		// FirebaseApp.Configure(); // Removed, Plugin.Firebase handles initialization via MauiProgram.cs
 
-		// Request notification authorization
+		// Request notification authorization - This should remain the app's responsibility
 		if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
 		{
 			UNUserNotificationCenter.Current.RequestAuthorization(
@@ -39,11 +30,9 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
 					}
 					if (approved)
 					{
-                        // Get the notification settings to ensure they are still valid
                         UNUserNotificationCenter.Current.GetNotificationSettings((settings) => {
                             if (settings.AuthorizationStatus == UNAuthorizationStatus.Authorized)
                             {
-                                // Use MainThread.BeginInvokeOnMainThread for MAUI
                                 MainThread.BeginInvokeOnMainThread(() => {
                                     UIApplication.SharedApplication.RegisterForRemoteNotifications();
                                     Console.WriteLine("Registered for remote notifications initiated on main thread.");
@@ -56,7 +45,7 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
                         });
 					}
 				});
-			UNUserNotificationCenter.Current.Delegate = this;
+			// UNUserNotificationCenter.Current.Delegate = this; // Removed, Plugin.Firebase handles this
 		}
 		else
 		{
@@ -70,9 +59,8 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
             });
 		}
 
-		// Set the FCM messaging delegate
-		Messaging.SharedInstance.Delegate = this;
-        Console.WriteLine("Firebase Messaging delegate set.");
+		// Messaging.SharedInstance.Delegate = this; // Removed, Plugin.Firebase handles this
+        // Console.WriteLine("Firebase Messaging delegate set."); // Removed
 
 		return base.FinishedLaunching(application, launchOptions);
 	}
@@ -80,80 +68,24 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
 	[Export("application:didRegisterForRemoteNotificationsWithDeviceToken:")]
 	public void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
 	{
-		Messaging.SharedInstance.ApnsToken = deviceToken; // Important: Set APNS token for FCM
-		Console.WriteLine($"FCM APNS token received: {deviceToken}");
+		// Messaging.SharedInstance.ApnsToken = deviceToken; // Removed, Plugin.Firebase should handle this
+		Console.WriteLine($"System didRegisterForRemoteNotificationsWithDeviceToken: {deviceToken}");
 		var tokenString = deviceToken.Description.Trim('<', '>').Replace(" ", "");
-		Console.WriteLine($"FCM APNS token string: {tokenString}");
-		// TODO: Send this token to your application server.
+		Console.WriteLine($"System APNS token string: {tokenString}");
+		// Plugin.Firebase should automatically pick up this token if correctly configured.
+		// If manual forwarding to Plugin.Firebase is needed, consult its documentation.
+		// For example: CrossFirebaseCloudMessaging.Current.DidReceiveApnsToken(deviceToken); (This is hypothetical)
 	}
 
 	[Export("application:didFailToRegisterForRemoteNotificationsWithError:")]
 	public void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
 	{
-		Console.WriteLine($"Failed to register for remote notifications: {error.LocalizedDescription}");
+		Console.WriteLine($"System didFailToRegisterForRemoteNotificationsWithError: {error.LocalizedDescription}");
 		// TODO: Handle the error (e.g., log, inform user).
 	}
 
-	// Called when a remote notification is received and the app is in the background or inactive.
-	[Export("application:didReceiveRemoteNotification:fetchCompletionHandler:")]
-	public void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
-	{
-		Console.WriteLine("Received remote notification (background/inactive): " + userInfo);
-
-		// Pass the message to Firebase Messaging
-        Messaging.SharedInstance.AppDidReceiveMessage(userInfo);
-
-		// TODO: Process the notification data (e.g., navigate to a specific screen).
-		// This is also a good place to update your app's UI if needed,
-		// for example, by refreshing data based on the notification content.
-
-		// Call the completion handler to indicate the result of the fetch operation.
-		completionHandler(UIBackgroundFetchResult.NewData); // Or .NoData / .Failed
-	}
-
-	// Called when a notification is delivered to a foreground app (iOS 10+).
-	[Export("userNotificationCenter:willPresentNotification:withCompletionHandler:")]
-	public void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
-	{
-		Console.WriteLine("Received remote notification (foreground): " + notification.Request.Content.UserInfo);
-
-        // You can process the notification here.
-        // The userInfo dictionary contains the notification data.
-        NSDictionary userInfo = notification.Request.Content.UserInfo;
-        Messaging.SharedInstance.AppDidReceiveMessage(userInfo);
-
-
-		// TODO: Customize presentation options as needed.
-		// By default, show alert, sound, and badge.
-		completionHandler(UNNotificationPresentationOptions.Alert | UNNotificationPresentationOptions.Sound | UNNotificationPresentationOptions.Badge);
-		// If you don't want to show the notification (e.g., you want to handle it with an in-app UI):
-		// completionHandler(UNNotificationPresentationOptions.None);
-	}
-
-	// Called when the user taps on a notification (iOS 10+).
-	[Export("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")]
-	public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
-	{
-		Console.WriteLine("User tapped notification: " + response.Notification.Request.Content.UserInfo);
-        NSDictionary userInfo = response.Notification.Request.Content.UserInfo;
-
-        // Pass the message to Firebase Messaging, though it might have already been handled
-        // if AppDidReceiveMessage was called in DidReceiveRemoteNotification or WillPresentNotification.
-        // Messaging.SharedInstance.AppDidReceiveMessage(userInfo); // Optional, depending on your flow
-
-		// TODO: Handle the user's interaction with the notification.
-		// For example, navigate to a specific screen in your app based on data in userInfo.
-
-		completionHandler();
-	}
-
-	// Called when FCM refreshes the registration token.
-	[Export("messaging:didReceiveRegistrationToken:")]
-	public void DidReceiveRegistrationToken(Messaging messaging, string fcmToken)
-	{
-		Console.WriteLine($"Firebase registration token refreshed: {fcmToken}");
-		// TODO: Notify your application server about the new or refreshed token.
-		// This token is different from the APNS token. It's the FCM registration token.
-		// Send this to your server to target this device for FCM messages.
-	}
+	// Removed DidReceiveRemoteNotification
+	// Removed WillPresentNotification
+	// Removed DidReceiveNotificationResponse
+	// Removed DidReceiveRegistrationToken
 }
