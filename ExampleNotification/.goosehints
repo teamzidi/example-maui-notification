@@ -1,0 +1,8 @@
+IsMobileApp: true
+MobileAppFramework: MAUI
+TargetPlatforms: iOS, Android
+UsedLibraries: CommunityToolkit.Maui, MvvmCross
+CI/CD: GitHub Actions
+MessagingService: Firebase Cloud Messaging
+ProjectPhase: Development
+Notes: This app heavily relies on custom renderers for specific UI elements and integrates with a custom backend API.

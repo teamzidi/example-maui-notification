@@ -1,0 +1,25 @@
+## General
+bin/
+obj/
+
+## IDE specific
+.vs/
+*.user
+*.userprefs
+.vscode/
+
+## Rider
+.idea/
+
+## macOS
+.DS_Store
+
+## Build Artifacts
+*.apk
+*.aab
+*.msix
+*.appx
+*.msixbundle
+*.appxbundle
+*.ipa
+*.pkg
