@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1069585707790",
+    "project_id": "ziditest-20250416",
+    "storage_bucket": "ziditest-20250416.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069585707790:android:d2dbb19fe4001019ee5d5f",
+        "android_client_info": {
+          "package_name": "dev.zidi.examplenotification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069585707790-7003rc7qs82ju1j1c7l4s8q55018g5do.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiCCamneuEdTZGQb79dJLQi6moMZ4wPSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069585707790-7003rc7qs82ju1j1c7l4s8q55018g5do.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
