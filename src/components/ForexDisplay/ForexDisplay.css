@@ -1,0 +1,92 @@
+.forex-display-container {
+  font-family: sans-serif;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.controls-section {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.pair-selector,
+.period-selector {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fff;
+}
+
+.pair-selector h3,
+.period-selector h3 {
+  margin-top: 0;
+  font-size: 1em;
+  color: #333;
+}
+
+.pair-selector button,
+.period-selector button {
+  background-color: #e7e7e7;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 8px 12px;
+  margin-right: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.pair-selector button:last-child,
+.period-selector button:last-child {
+  margin-right: 0;
+}
+
+.pair-selector button:hover,
+.period-selector button:hover {
+  background-color: #dcdcdc;
+}
+
+.pair-selector button.active,
+.period-selector button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.chart-section {
+  margin-top: 20px;
+}
+
+.chart-section h3 {
+  font-size: 1.2em;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.chart-placeholder {
+  height: 300px; /* Adjust as needed */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #777;
+  padding: 20px;
+}
+
+.chart-placeholder p {
+  margin: 5px 0;
+}
+
+.chart-placeholder pre {
+  width: 90%; /* Ensure pre tag takes up most of the placeholder width */
+  font-size: 0.8em; /* Smaller font for data dump */
+}
