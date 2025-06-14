@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Maui.LifecycleEvents; // Added this line
 using Plugin.Firebase.Core; // Required for CrossFirebase.Initialize
 
 #if IOS
