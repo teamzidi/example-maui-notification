@@ -1,5 +1,6 @@
 using Plugin.Firebase.CloudMessaging;
-using Microsoft.Maui.Clipboard; // Clipboard のために必要
+using Microsoft.Maui.ApplicationModel.DataTransfer; // Replaced Microsoft.Maui.Clipboard
+using Plugin.Firebase.CloudMessaging.EventArgs; // Added for FCM EventArgs
 using System; // For EventArgs, Exception, Task
 using System.Diagnostics; // For Debug.WriteLine
 // using Microsoft.Maui.Dispatching; // Not strictly needed if using MainThread static class
