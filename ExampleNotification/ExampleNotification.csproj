@@ -50,7 +50,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
-		<BundleResource Include="Platforms\iOS\GoogleService-Info.plist" />
+		<BundleResource Include="GoogleService-Info.plist" />
 		<!-- Removed Xamarin.Firebase.iOS.Core -->
 		<!-- Removed Xamarin.Firebase.iOS.CloudMessaging -->
 	</ItemGroup>
