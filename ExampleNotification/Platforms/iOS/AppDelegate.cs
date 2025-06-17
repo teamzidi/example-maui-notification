@@ -1,6 +1,6 @@
 ﻿using Foundation;
-// using Firebase.CloudMessaging; // Removed, Plugin.Firebase handles this
-// using Firebase.Core; // Removed, Plugin.Firebase handles this
+using Firebase.CloudMessaging; // Re-added or uncommented for Messaging.SharedInstance
+// using Firebase.Core; // Still not needed here as App.Configure() is in MauiProgram
 using UIKit;
 using UserNotifications; // Still needed for RequestAuthorization
 using System; // For Console.WriteLine
@@ -68,10 +68,13 @@ public class AppDelegate : MauiUIApplicationDelegate // Removed IUNUserNotificat
 	[Export("application:didRegisterForRemoteNotificationsWithDeviceToken:")]
 	public void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
 	{
-		// Messaging.SharedInstance.ApnsToken = deviceToken; // Removed, Plugin.Firebase should handle this
 		Console.WriteLine($"System didRegisterForRemoteNotificationsWithDeviceToken: {deviceToken}");
 		var tokenString = deviceToken.Description.Trim('<', '>').Replace(" ", "");
 		Console.WriteLine($"System APNS token string: {tokenString}");
+
+		// APNsトークンをFirebase SDKに設定 (Explicitly set APNS token to Firebase SDK)
+		Firebase.CloudMessaging.Messaging.SharedInstance.ApnsToken = deviceToken;
+		Console.WriteLine("Successfully set APNS token to Firebase.Messaging.SharedInstance");
 		// Plugin.Firebase should automatically pick up this token if correctly configured.
 		// If manual forwarding to Plugin.Firebase is needed, consult its documentation.
 		// For example: CrossFirebaseCloudMessaging.Current.DidReceiveApnsToken(deviceToken); (This is hypothetical)
