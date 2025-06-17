@@ -74,12 +74,12 @@ public class MainActivity : MauiAppCompatActivity
                 // "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
                 // If the user selects "No thanks," allow the user to continue without notifications.
                 // For now, we'll just request it.
-                RequestPermissions(new[] { global::Android.Manifest.Permission.PostNotifications }, 0); // Request code 0
+                RequestPermissions(new[] { global::Android.Manifest.Permission.PostNotifications }, POST_NOTIFICATIONS_REQUEST_CODE); // Request code for POST_NOTIFICATIONS
             }
             else
             {
                 Log.Debug(TAG, "Requesting POST_NOTIFICATIONS permission directly.");
-                RequestPermissions(new[] { global::Android.Manifest.Permission.PostNotifications }, 0); // Request code 0
+                RequestPermissions(new[] { global::Android.Manifest.Permission.PostNotifications }, POST_NOTIFICATIONS_REQUEST_CODE); // Request code for POST_NOTIFICATIONS
             }
         }
         else
