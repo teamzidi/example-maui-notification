@@ -32,7 +32,6 @@
 	<!-- iOS Debug Specific Settings -->
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
 		<MtouchLink>None</MtouchLink>
-		<!-- Other common iOS Debug settings can be added here if needed, e.g.: -->
 		<!-- <MtouchEnableSGenConc>true</MtouchEnableSGenConc> -->
 		<!-- <MtouchExtraArgs>--optimize=force-rejected-types-removal</MtouchExtraArgs> -->
 		<!-- <IDEDebuggingLevel>Full</IDEDebuggingLevel> -->
