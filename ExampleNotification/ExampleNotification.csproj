@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-android;net8.0-ios</TargetFrameworks>
+		<TargetFrameworks>net9.0-android;net9.0-ios</TargetFrameworks>
 
 		<OutputType>Exe</OutputType>
 		<RootNamespace>ExampleNotification</RootNamespace>
@@ -20,22 +20,8 @@
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
-	</PropertyGroup>
-
-	<!-- iOS Specific Settings -->
-	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
-		<SwiftEnableStandardLibraries>true</SwiftEnableStandardLibraries>
-	</PropertyGroup>
-
-	<!-- iOS Debug Specific Settings -->
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
-		<MtouchLink>None</MtouchLink>
-		<!-- <MtouchEnableSGenConc>true</MtouchEnableSGenConc> -->
-		<!-- <MtouchExtraArgs>--optimize=force-rejected-types-removal</MtouchExtraArgs> -->
-		<!-- <IDEDebuggingLevel>Full</IDEDebuggingLevel> -->
-		<!-- <UseHardenedRuntime>true</UseHardenedRuntime> -->
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -60,26 +46,21 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
-		<!-- Removed Xamarin.Firebase.Messaging from here -->
 	</ItemGroup>
 
 	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
 		<BundleResource Include="GoogleService-Info.plist" />
-		<!-- Removed Xamarin.Firebase.iOS.Core -->
-		<!-- Removed Xamarin.Firebase.iOS.CloudMessaging -->
 	</ItemGroup>
 
 	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
 		<GoogleServicesJson Include="Platforms\Android\google-services.json" />
 		<AndroidResource Include="Platforms\Android\Resources\values\colors.xml" />
-		<!-- Removed Xamarin.Firebase.Messaging -->
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-ios' OR '$(TargetFramework)' == 'net8.0-android'">
-	  <!-- <PackageReference Include="Plugin.Firebase" Version="3.1.4" /> --> <!-- Removed -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-ios' OR '$(TargetFramework)' == 'net9.0-android'">
 	  <PackageReference Include="Plugin.Firebase.Core" Version="3.1.1" />
 	  <PackageReference Include="Plugin.Firebase.CloudMessaging" Version="3.1.2" />
-	  <PackageReference Include="Plugin.Firebase.Analytics" Version="3.1.2" /> <!-- Added this line -->
+	  <PackageReference Include="Plugin.Firebase.Analytics" Version="3.1.2" />
 	</ItemGroup>
 
 </Project>
