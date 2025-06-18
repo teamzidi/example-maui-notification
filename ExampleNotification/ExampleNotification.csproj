@@ -29,6 +29,22 @@
 		<SwiftEnableStandardLibraries>true</SwiftEnableStandardLibraries>
 	</PropertyGroup>
 
+	<!-- iOS Debug Specific Settings -->
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
+		<MtouchLink>None</MtouchLink>
+		<!-- Other common iOS Debug settings can be added here if needed, e.g.: -->
+		<!-- <MtouchEnableSGenConc>true</MtouchEnableSGenConc> -->
+		<!-- <MtouchExtraArgs>--optimize=force-rejected-types-removal</MtouchExtraArgs> -->
+		<!-- <IDEDebuggingLevel>Full</IDEDebuggingLevel> -->
+		<!-- <UseHardenedRuntime>true</UseHardenedRuntime> -->
+	</PropertyGroup>
+
+	<!-- It's also common to have a Release configuration for iOS -->
+	<!-- <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-ios|AnyCPU'"> -->
+		<!-- <MtouchLink>SdkOnly</MtouchLink> -->
+		<!-- <IDEDebuggingLevel>None</IDEDebuggingLevel> -->
+	<!-- </PropertyGroup> -->
+
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
